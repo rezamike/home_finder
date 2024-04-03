@@ -1,13 +1,16 @@
-import express from "express";
-import cors from "cors";
-import records from "./routes/record.js";
-
+const express = require("express");
 const PORT = process.env.PORT || 5050;
 const app = express();
+const mongoose = require("mongoose");
 
-app.use(cors());
+// middlewares
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/record", records);
+
+require("dotenv").config();
+require("./controllers/index.js")(app);
+
+mongoose.connect(process.env.ATLAS_URI);
 
 // start the Express server
 app.listen(PORT, () => {
